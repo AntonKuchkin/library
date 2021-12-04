@@ -1,11 +1,25 @@
 package com.example.library.entity;
 
-import javax.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "author")
+@NoArgsConstructor
 public class AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,13 +27,10 @@ public class AuthorEntity {
     private Integer id;
     @Column(name = "author")
     private String authorName;
-    @ManyToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "author_id") , inverseJoinColumns = @JoinColumn(name = "book_id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "author_id"), inverseJoinColumns = @JoinColumn(name = "book_id"))
 
-    private List<BookEntity>bookEntityList;
-
-    public AuthorEntity() {
-    }
+    private List<BookEntity> bookEntityList;
 
     public AuthorEntity(String authorName) {
         this.authorName = authorName;
@@ -30,40 +41,8 @@ public class AuthorEntity {
         this.authorName = authorName;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAuthorName() {
-        return authorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
-    }
-
-    public List<BookEntity> getBookEntityList() {
-        return bookEntityList;
-    }
-
-    public void setBookEntityList(List<BookEntity> bookEntityList) {
-        this.bookEntityList = bookEntityList;
-    }
-
-    @Override
-    public String toString() {
-        return "AuthorEntity{" +
-                "id=" + id +
-                ", authorName='" + authorName + '\'' +
-                '}';
-    }
-
-    public void addBookToAuthor(BookEntity book){
-        if (bookEntityList==null){
+    public void addBookToAuthor(BookEntity book) {
+        if (bookEntityList == null) {
             bookEntityList = new ArrayList<>();
         }
         bookEntityList.add(book);
